@@ -2,6 +2,7 @@ import App from './App';
 import Tag from './components/Tag';
 import Listen from './components/Listen';
 import Home from './components/Home';
+import DeezerChannel from './components/DeezerChannel';
 
 export function configRouter (router) {
   router.map({
@@ -22,6 +23,10 @@ export function configRouter (router) {
           component: Listen
         }
       }
+    },
+    '/channel.html': {
+      name: 'channel',
+      component: DeezerChannel
     }
   });
 }

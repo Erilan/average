@@ -1,8 +1,5 @@
 
 export default {
-
-  toto: 'tetete',
-
   state: {
     map: {
       center: {
