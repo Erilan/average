@@ -1,11 +1,14 @@
 import deezer from './../service/deezer'
-import kuzzle from './../service/kuzzl'
+import kuzzle from './../service/kuzzle'
+import mapStore from './MapStore'
 
 export default {
   searchInput: '',
   searchResult: [],
   formattedSearchResult: [],
-  selectedSongId: '',
+  selectedSongId: false,
+  songAdded: false,
+  currentSongs: [],
 
   triggerSearch() {
     if (this.searchInput.length > 2) {
@@ -21,19 +24,31 @@ export default {
     }
   },
 
-  tagSong(position) {
-    console.log(this.formattedSearchResult[this.selectedSongId])
-    
+  tagSong() {
     var selectedSong = this.formattedSearchResult[this.selectedSongId]
+
+    var document = {
+      song: selectedSong,
+      position: {...mapStore.currentMarker}
+    };
 
     kuzzle
       .dataCollectionFactory('song')
-      .createDocument(
-        {
-          song: selectedSong,
-          position: position
+      .createDocument(document, (error, result) => {
+        if (error) {
+          console.log(error)
+        } else {
+          mapStore.currentMarker = false
+          this.searchInput = ''
+          this.searchResult = []
+          this.formattedSearchResult = []
+          this.songAdded = true
         }
-      );
-
+      });
   }
+
+
+
+
+
 }
