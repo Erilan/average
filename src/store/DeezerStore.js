@@ -24,6 +24,19 @@ export default {
     }
   },
 
+  initDeezerPlayer() {
+    DZ.init({
+      appId  : '179142',
+      channelUrl : 'http://localhost:8080/#!/channel.html',
+      player: {
+        container: 'player',
+        width : 800,
+        height : 300,
+        onload : function(){}
+      }
+    });
+  },
+
   tagSong() {
     var selectedSong = this.formattedSearchResult[this.selectedSongId]
 
@@ -48,9 +61,11 @@ export default {
           this.selectedSongId = false
         }
       });
+  },
+
+  playSong(songId) {
+    DZ.player.playTracks([songId])
   }
-
-
 
 
 

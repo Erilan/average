@@ -4,14 +4,16 @@
 
   <h2>Listen</h2>
 
+  <div id="player"></div>
+
   <div class="map-container">
     <g-map></g-map>
   </div>
 
-
 </template>
 
 <script>
+
 
   import returnToHome from './ReturnToHome'
   import gMap from './GMap'
@@ -31,9 +33,16 @@
       gMap,
     },
     ready: function() {
+      this.deezerStore.initDeezerPlayer()
+
       this.mapStore.disableTagClickListener()
       this.mapStore.loadSongMarkers()
       this.mapStore.enableListenDragListener()
+
+      window.average.triggerPlaySong = (songId)=>{
+        this.deezerStore.playSong(songId)
+      }
+
     },
     methods: {
     }

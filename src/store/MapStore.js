@@ -73,7 +73,6 @@ export default {
     dataMapping
       .set('position', {type: 'geo_point', lat_lon: true})
       .apply(function(error, result){
-      console.log(error, result)
     });
 
 
@@ -119,8 +118,15 @@ export default {
     })
 
     marker.addListener('click', () => {
-      console.log()
-      this.songInfoWindow.setContent(song.song.artist.name + ' - ' +song.song.title)
+
+      console.log(song.song)
+
+      var content = '<h3>' + song.song.title + '</h3> \
+      <p>' + song.song.artist.name + '</p> \
+      <button onclick="window.average.triggerPlaySong(' + song.song.id + ');">Play song</button>'
+
+      // this.songInfoWindow.setContent(song.song.artist.name + ' - ' + song.song.title)
+      this.songInfoWindow.setContent(content)
       this.songInfoWindow.open(this.map, marker)
     })
 
