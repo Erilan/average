@@ -31,13 +31,11 @@
       gMap,
     },
     ready: function() {
-//      load(GOOGLE_API_KEY)
+      this.mapStore.disableTagClickListener()
       this.mapStore.loadSongMarkers()
+      this.mapStore.enableListenDragListener()
     },
     methods: {
-//      onGMapClick(position) {
-//        this.mapStore.setCurrentMarker(position)
-//      },
     }
   }
 </script>

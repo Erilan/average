@@ -34,10 +34,6 @@
     v-on:click="onTagButtonClick"
   >TAG !</button>
 
-  <p v-if="deezerStore.songAdded">
-    Chanson ajoutée avec succés !
-  </p>
-
 </template>
 
 <script>
@@ -60,12 +56,9 @@
       gMap,
     },
     ready: function() {
-//      load(GOOGLE_API_KEY)
+      this.mapStore.enableTagClickListener()
     },
     methods: {
-      onGMapClick(position) {
-        this.mapStore.setCurrentMarker(position)
-      },
       onSearchInputChange() {
         this.deezerStore.triggerSearch()
       },

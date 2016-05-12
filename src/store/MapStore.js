@@ -9,35 +9,44 @@ export default {
     lat: 43.604727499999996,
     lng: 3.9011747
   },
-  zoom: 11,
+  zoom: 13,
   map: null,
-  songMarkers: [
-    {
-      position: {
-        lat: 46.9,
-        lng: 4
-      }
-    }
-  ],
+  songMarkers: [],
+  songInfoWindow: new google.maps.InfoWindow(),
 
   initMap() {
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: this.center,
       zoom: this.zoom
     })
+  },
 
+  enableTagClickListener() {
     google.maps.event.addListener(this.map, 'click', (position) => {
       this.setCurrentTagMarker(position)
     })
   },
 
-  addMarker(position) {
+  enableListenDragListener() {
+    google.maps.event.addListener(this.map, 'dragend', () => {
+      this.center.lat = this.map.getCenter().lat()
+      this.center.lng = this.map.getCenter().lng()
+      this.loadSongMarkers()
+    })
+  },
+
+  disableTagClickListener() {
+    google.maps.event.clearListeners(this.map, 'click');
 
   },
 
   setCurrentPosition(position) {
-    this.map.center.lat = position.coords.latitude
-    this.map.center.lng = position.coords.longitude
+    this.map = {
+      center: {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+    }
   },
 
   setCurrentTagMarker(position) {
@@ -50,30 +59,35 @@ export default {
       map: this.map,
     });
   },
+  
+  removeCurrentTagMarker() {
+    if (this.currentTagMarker) {
+      this.currentTagMarker.setMap(null)
+      this.currentTagMarker = false
+    }
+  },
 
   loadSongMarkers() {
-    //var filter = {
-    //  filter: {
-    //    geo_distance: {
-    //      distance: '10km',
-    //      position: {
-    //        lat: '43.604727499999996', lon: '3.9011747'
-    //      }
-    //    }
-    //  }
-    //};
-    //"SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[1Jo_lWskSzSa0pEkH6uk-A][average][0]: SearchParseException[[average][0]: from[-1],size[-1]: Parse Failure [Failed to parse source [{"geo_distance":{"distance":"10km","position":{"lat":"43.604727499999996","lon":"3.9011747"}}}]]]; nested: SearchParseException[[average][0]: from[-1],size[-1]: Parse Failure [No parser for element [geo_distance]]]; }{[1Jo_lWskSzSa0pEkH6uk-A][average][1]: SearchParseException[[average][1]: from[-1],size[-1]: Parse Failure [Failed to parse source [{"geo_distance":{"distance":"10km","position":{"lat":"43.604727499999996","lon":"3.9011747"}}}]]]; nested: SearchParseException[[average][1]: from[-1],size[-1]: Parse Failure [No parser for element [geo_distance]]]; }{[1Jo_lWskSzSa0pEkH6uk-A][average][2]: SearchParseException[[average][2]: from[-1],size[-1]: Parse Failure [Failed to parse source [{"geo_distance":{"distance":"10km","position":{"lat":"43.604727499999996","lon":"3.9011747"}}}]]]; nested: SearchParseException[[average][2]: from[-1],size[-1]: Parse Failure [No parser for element [geo_distance]]]; }{[1Jo_lWskSzSa0pEkH6uk-A][average][3]: SearchParseException[[average][3]: from[-1],size[-1]: Parse Failure [Failed to parse source [{"geo_distance":{"distance":"10km","position":{"lat":"43.604727499999996","lon":"3.9011747"}}}]]]; nested: SearchParseException[[average][3]: from[-1],size[-1]: Parse Failure [No parser for element [geo_distance]]]; }{[1Jo_lWskSzSa0pEkH6uk-A][average][4]: SearchParseException[[average][4]: from[-1],size[-1]: Parse Failure [Failed to parse source [{"geo_distance":{"distance":"10km","position":{"lat":"43.604727499999996","lon":"3.9011747"}}}]]]; nested: SearchParseException[[average][4]: from[-1],size[-1]: Parse Failure [No parser for element [geo_distance]]]; }]"
 
-    //var filter = {
-    //  geo_distance: {
-    //    distance: '10km',
-    //    position: {
-    //      lat: '43.604727499999996', lon: '3.9011747'
-    //    }
-    //  }
-    //};
+    var dataMapping = kuzzle.dataCollectionFactory('song').dataMappingFactory();
+    dataMapping
+      .set('position', {type: 'geo_point', lat_lon: true})
+      .apply(function(error, result){
+      console.log(error, result)
+    });
 
-    var filter = {}
+
+    var filter = {
+     filter: {
+       geo_distance: {
+         distance: '3km',
+         position: {
+           lat: this.center.lat,
+           lon: this.center.lng
+         }
+       }
+     }
+    };
 
     kuzzle
       .dataCollectionFactory('song')
@@ -81,12 +95,36 @@ export default {
         if (error) {
           console.log(error)
         } else {
+          this.destroySongMarkers()
           result.documents.forEach(document => {
-            console.log(document.content);
-            this.songMarkers.push(document.content)
+            this.addSongMarker(document.content)
           });
         }
       });
+  },
+
+  destroySongMarkers() {
+    this.songMarkers.forEach(marker => {
+      marker.setMap(null)
+    })
+
+    this.songMarkers= []
+  },
+
+  addSongMarker(song) {
+
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(song.position.lat, song.position.lon),
+      map: this.map
+    })
+
+    marker.addListener('click', () => {
+      console.log()
+      this.songInfoWindow.setContent(song.song.artist.name + ' - ' +song.song.title)
+      this.songInfoWindow.open(this.map, marker)
+    })
+
+    this.songMarkers.push(marker);
   }
 
 }

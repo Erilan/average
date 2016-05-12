@@ -29,7 +29,10 @@ export default {
 
     var document = {
       song: selectedSong,
-      position: {...mapStore.currentMarker}
+      position: {
+        lat: mapStore.currentTagMarker.position.lat(),
+        lon: mapStore.currentTagMarker.position.lng()
+      }
     };
 
     kuzzle
@@ -38,11 +41,11 @@ export default {
         if (error) {
           console.log(error)
         } else {
-          mapStore.currentMarker = false
+          mapStore.removeCurrentTagMarker()
           this.searchInput = ''
           this.searchResult = []
           this.formattedSearchResult = []
-          this.songAdded = true
+          this.selectedSongId = false
         }
       });
   }
