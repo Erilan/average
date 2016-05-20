@@ -1,4 +1,3 @@
-import deezer from './../service/deezer'
 import kuzzle from './../service/kuzzle'
 import mapStore from './MapStore'
 
@@ -9,6 +8,9 @@ export default {
   selectedSongId: false,
   songAdded: false,
   currentSongs: [],
+  roaming: false,
+  ready: false,
+  playedSong: [],
 
   triggerSearch() {
     if (this.searchInput.length > 2) {
@@ -28,14 +30,34 @@ export default {
     DZ.init({
       appId  : '179142',
       channelUrl : 'http://localhost:8080/#!/channel.html',
-      player: {
-        container: 'player',
-        width : 800,
-        height : 300,
-        onload : function(){}
+      // player: {
+      //   container: 'player',
+      //   width : 800,
+      //   height : 300,
+      //   onload : function(){}
+      // }
+      player : {
+        // onload : this.onDeezerPlayerLoaded
       }
     });
   },
+
+  // onDeezerPlayerLoaded() {
+  //   $("#controlers input").attr('disabled', false);
+  //   event_listener_append('player_loaded');
+  //   DZ.Event.subscribe('current_track', function(arg){
+  //     event_listener_append('current_track', arg.index, arg.track.title, arg.track.album.title);
+  //   });
+  //   DZ.Event.subscribe('player_position', function(arg){
+  //     event_listener_append('position', arg[0], arg[1]);
+  //     $("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
+  //   });
+  //
+  //   DZ.Event.subscribe('track_end', function() {
+  //     event_listener_append('track_end');
+  //   });
+  // },
+
 
   tagSong() {
     var selectedSong = this.formattedSearchResult[this.selectedSongId]
@@ -65,6 +87,42 @@ export default {
 
   playSong(songId) {
     DZ.player.playTracks([songId])
+  },
+
+  activateRoaming() {
+    this.roaming = true
+
+    var songId = this.getSongIdToPlay()
+    if (songId) {
+      this.playedSong.push(songId);
+      DZ.player.playTracks([songId])
+    }
+
+    DZ.Event.subscribe('track_end', (args, evt_name) => {
+      songId = this.getSongIdToPlay()
+      if (songId) {
+        this.playedSong.push(songId);
+        DZ.player.playTracks([songId])
+      }
+    });
+  },
+
+  getSongIdToPlay() {
+    var songs = mapStore.songsAround.filter((song) => {
+      return !this.playedSong.some((playedSongId) => {return song.song.id == playedSongId})
+    })
+
+    if (songs.length) {
+      return songs[0].song.id
+    }
+
+    return false
+  },
+
+  deactivateRoaming() {
+    this.roaming = false
+
+    DZ.player.pause()
   }
 
 

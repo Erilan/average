@@ -12,6 +12,7 @@ export default {
   zoom: 13,
   map: null,
   songMarkers: [],
+  songsAround: [],
   songInfoWindow: new google.maps.InfoWindow(),
 
   initMap() {
@@ -67,7 +68,11 @@ export default {
     }
   },
 
-  loadSongMarkers() {
+  loadSongMarkers(from) {
+
+    if (typeof from == 'undefined') {
+      from = 0
+    }
 
     var dataMapping = kuzzle.dataCollectionFactory('song').dataMappingFactory();
     dataMapping
@@ -77,15 +82,17 @@ export default {
 
 
     var filter = {
-     filter: {
-       geo_distance: {
-         distance: '3km',
-         position: {
-           lat: this.center.lat,
-           lon: this.center.lng
-         }
-       }
-     }
+      filter: {
+        geo_distance: {
+          distance: '50km',
+          position: {
+            lat: this.center.lat,
+            lon: this.center.lng
+          }
+        },
+      },
+      size: 100,
+      from: from
     };
 
     kuzzle
@@ -95,11 +102,18 @@ export default {
           console.log(error)
         } else {
           this.destroySongMarkers()
-          result.documents.forEach(document => {
+          this.songsAround = result.documents.map(document => {
             this.addSongMarker(document.content)
+            return {...document.content}
           });
+
+          console.log()
         }
       });
+  },
+
+  loadMoreSongsAround(from) {
+    this.loadSongMarkers(from)
   },
 
   destroySongMarkers() {
@@ -114,16 +128,17 @@ export default {
 
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(song.position.lat, song.position.lon),
-      map: this.map
+      map: this.map,
+      optimized: false
     })
 
-    marker.addListener('click', () => {
+    marker.addListener('mousedown', () => {
 
       console.log(song.song)
 
       var content = '<h3>' + song.song.title + '</h3> \
       <p>' + song.song.artist.name + '</p> \
-      <button onclick="window.average.triggerPlaySong(' + song.song.id + ');">Play song</button>'
+      <button ontouchstart="window.average.triggerPlaySong(' + song.song.id + ');" onclick="window.average.triggerPlaySong(' + song.song.id + ');">Play song</button>'
 
       // this.songInfoWindow.setContent(song.song.artist.name + ' - ' + song.song.title)
       this.songInfoWindow.setContent(content)

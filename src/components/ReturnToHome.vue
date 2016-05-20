@@ -4,13 +4,18 @@
 
 <script>
 
-
+  import DeezerStore from './../store/DeezerStore'
 
   export default {
-    components: {
+    data() {
+      return {
+        deezerStore: DeezerStore
+      }
     },
     methods: {
       onReturnToHomeButtonClick: function() {
+        this.deezerStore.ready = false
+        this.deezerStore.roaming = false
         this.$router.go({name: 'home'});
       }
     }

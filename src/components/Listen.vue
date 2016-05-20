@@ -6,6 +6,9 @@
 
   <div id="player"></div>
 
+  <button v-if="!deezerStore.roaming && deezerStore.ready" v-on:click="onActivateRoamingButtonClick">Roaming</button>
+  <button v-if="deezerStore.roaming" v-on:click="onDeactivateRoamingButtonClick">No roaming</button>
+
   <div class="map-container">
     <g-map></g-map>
   </div>
@@ -13,7 +16,6 @@
 </template>
 
 <script>
-
 
   import returnToHome from './ReturnToHome'
   import gMap from './GMap'
@@ -39,12 +41,23 @@
       this.mapStore.loadSongMarkers()
       this.mapStore.enableListenDragListener()
 
-      window.average.triggerPlaySong = (songId)=>{
+      window.average.triggerPlaySong = (songId) => {
+        this.deezerStore.deactivateRoaming()
         this.deezerStore.playSong(songId)
       }
 
+      DZ.ready(() => {
+        this.deezerStore.ready = true
+      });
+
     },
     methods: {
+      onActivateRoamingButtonClick: function() {
+        this.deezerStore.activateRoaming()
+      },
+      onDeactivateRoamingButtonClick: function() {
+        this.deezerStore.deactivateRoaming()
+      }
     }
   }
 </script>
