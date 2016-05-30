@@ -14,7 +14,7 @@ export default {
 
   triggerSearch() {
     if (this.searchInput.length > 2) {
-      deezer.api('search', 'GET', {q: this.searchInput}, (response) => {
+      DZ.api('search', 'GET', {q: this.searchInput}, (response) => {
 
         response.data.forEach((result) => {
           this.formattedSearchResult[result.id] = result
