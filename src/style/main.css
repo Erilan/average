@@ -207,11 +207,23 @@ button {
   width: 20px;
 }
 
-.Player-play {
+.Player-pause {
   position: absolute;
   left: 30px;
   bottom: 15px;
   background-image: url("/static/img/pause.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  height: 15px;
+  width: 15px;
+}
+
+.Player-play {
+  position: absolute;
+  left: 30px;
+  bottom: 15px;
+  background-image: url("/static/img/unpause.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px;

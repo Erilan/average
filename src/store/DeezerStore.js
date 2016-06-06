@@ -13,6 +13,8 @@ export default {
   roaming: false,
   ready: false,
   playedSong: [],
+  currentSongIsPlaying: true,
+  currentSongIsPaused: false,
   isPlaying: false,
   currentSong: false,
 
@@ -53,22 +55,20 @@ export default {
   },
 
   onDeezerPlayerLoaded() {
-    console.log('playeeeer')
-    // $("#controlers input").attr('disabled', false);
-    // event_listener_append('player_loaded');
-    // DZ.Event.subscribe('current_track', function(arg){
-    //   event_listener_append('current_track', arg.index, arg.track.title, arg.track.album.title);
-    // });
-    // DZ.Event.subscribe('player_position', function(arg){
-    //   event_listener_append('position', arg[0], arg[1]);
-    //   $("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
-    // });
-    //
-    // DZ.Event.subscribe('track_end', function() {
-    //   event_listener_append('track_end');
-    // });
+    console.log('playeeeer ready')
   },
 
+  pauseSong() {
+    this.currentSongIsPlaying = false
+    this.currentSongIsPaused = true
+    DZ.player.pause()
+  },
+  
+  unpauseSong() {
+    this.currentSongIsPlaying = true
+    this.currentSongIsPaused = false
+    DZ.player.play()
+  },
 
   tagSong() {
     var selectedSong = this.formattedSearchResult[this.selectedSongId]

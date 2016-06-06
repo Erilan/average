@@ -1,17 +1,4 @@
 <template>
-
-  <!--<return-to-home></return-to-home>-->
-
-  <!--<h2>Listen</h2>-->
-
-  <!--<div id="player"></div>-->
-
-  <!--<button v-if="!deezerStore.roaming && deezerStore.ready" v-on:click="onActivateRoamingButtonClick">Roaming</button>-->
-  <!--<button v-if="deezerStore.roaming" v-on:click="onDeactivateRoamingButtonClick">No roaming</button>-->
-
-  <!--<div class="map-container">-->
-    <!--<g-map></g-map>-->
-  <!--</div>-->
   <div class="Menu">
     <div class="Menu-logo">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="153" height="44" viewBox="0 0 153 44">
@@ -26,7 +13,8 @@
       {{ deezerStore.currentSong.artist.name }} - {{ deezerStore.currentSong.title_short }}
     </p>
     <div class="Player-controls">
-      <button class="Player-play"></button>
+      <button class="Player-pause" v-if="deezerStore.currentSongIsPlaying" v-on:click="onPauseButtonClick()"></button>
+      <button class="Player-play" v-if="deezerStore.currentSongIsPaused" v-on:click="onPlayButtonClick()"></button>
       <div class="Player-bar">
         <img class="Player-position" src="/static/img/progress.png" />
       </div>
@@ -118,10 +106,13 @@
       },
       onActivateRoamingButtonClick: function() {
         this.deezerStore.activateRoaming()
+      },
+      onPauseButtonClick: function() {
+        this.deezerStore.pauseSong()
+      },
+      onPlayButtonClick: function() {
+        this.deezerStore.unpauseSong()
       }
-//      onDeactivateRoamingButtonClick: function() {
-//        this.deezerStore.deactivateRoaming()
-//      }
     }
   }
 </script>
