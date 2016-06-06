@@ -14,7 +14,7 @@ export default {
   ready: false,
   playedSong: [],
   isPlaying: false,
-  currentSong: false, 
+  currentSong: false,
 
   triggerSearch() {
     if (this.searchInput.length > 2) {
@@ -130,7 +130,7 @@ export default {
     })
 
     if (songs.length) {
-      this.currentSong = songs[0]
+      this.currentSong = songs[0].song
       return songs[0].song.id
     }
 
