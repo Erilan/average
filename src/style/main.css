@@ -95,7 +95,7 @@ button {
 }
 
 .Bottom-context--play.active {
-  background-image: url("/static/img/play_selected.png");
+  background-image: url("/img/play_selected.png");
 }
 
 .Map {
@@ -136,8 +136,17 @@ button {
   margin-bottom: 10px;
 }
 
-.Map-action--roaming.active image {
-  fill: #ffff00;
+.Map-action--roaming {
+  width: 57px;
+  height: 50px;
+  background-image: url("/static/img/roaming.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50px;
+}
+
+.Map-action--roaming.active {
+  background-image: url("/static/img/roaming_selected.png");
 }
 
 .Menu {
@@ -408,7 +417,7 @@ button {
   padding: 40px 0 0 0;
   width: 270px;
   text-align: center;
-}
+} 
 
 .Splash-logo img {
   width: 100%;

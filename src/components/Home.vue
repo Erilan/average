@@ -1,14 +1,4 @@
 <template>
-  <!--<h2>Home</h2>-->
-
-  <!--<button-->
-    <!--v-on:click="onTagButtonClick"-->
-    <!--v-if="geolocation"-->
-  <!--&gt;Tag</button>-->
-  <!--<button-->
-    <!--v-on:click="onListenButtonClick"-->
-    <!--v-if="geolocation"-->
-  <!--&gt;Listen</button>-->
 
   <div class="Splash">
     <div class="Splash-logo">
@@ -57,8 +47,21 @@
         this.mapStore.setCenterPosition(position)
         this.$router.go({name: 'tag'});
       },
-      handleGeolocationDenied() {
-        this.geolocation = false
+      handleGeolocationDenied(error) {
+          jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyAwe3h6lpqDEsCqUx1UkwCKW6CO-gt_xRg", (success) => {
+            this.geolocation = false
+            var geoposition = {
+              coords: {
+                latitude: success.location.lat,
+                longitude: success.location.lng
+              }
+            }
+            this.initMapCenterPosition(geoposition)
+          })
+          .fail(function(err) {
+            console.error("API Geolocation error!");
+            console.error(err);
+          });
       }
     },
     ready() {

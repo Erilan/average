@@ -44,7 +44,6 @@ export default {
   },
 
   initDeezerPlayer() {
-    console.log('init player')
     DZ.init({
       appId  : '179142',
       channelUrl : 'http://localhost:8080/#!/channel.html',
@@ -55,7 +54,7 @@ export default {
   },
 
   onDeezerPlayerLoaded() {
-    console.log('playeeeer ready')
+    console.log('player ready')
   },
 
   pauseSong() {
