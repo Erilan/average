@@ -1,0 +1,390 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  overflow: hidden;
+  height: 100vh;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+button {
+  background: transparent;
+  border: none;
+}
+
+.Bottom {
+  position: fixed;
+  bottom: 0;
+  height: 80px;
+  width: 100%;
+  font-size: 0;
+  z-index: 30;
+}
+
+.Bottom-context {
+  display: inline-block;
+  width: 50%;
+  background-color: black;
+  height: 100%;
+}
+
+.Bottom-context.active {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.Bottom-context--tag {
+  background-image: url("assets/img/tag.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 50px;
+}
+
+.Bottom-context--tag.active {
+  background-image: url("assets/img/tag_selected.png");
+}
+
+.Bottom-context--play {
+  background-image: url("assets/img/play.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 50px;
+}
+
+.Bottom-context--play.active {
+  background-image: url("assets/img/play_selected.png");
+}
+
+.Map {
+  height: 100vh;
+  position: relative;
+}
+
+.Map-poi {
+  position: absolute;
+}
+
+.Map-poi img {
+  width: 50px;
+}
+
+.Map-poi--play {
+  left: 130px;
+  top: 200px;
+  display: none;
+}
+
+.Map-poi--tag {
+  left: 160px;
+  top: 250px;
+}
+
+.Map-actions {
+  position: fixed;
+  top: 80px;
+  right: 15px;
+}
+
+.Map-action {
+  display: block;
+  background: transparent;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.Map-action--roaming.active image {
+  fill: #ffff00;
+}
+
+.Menu {
+  position: fixed;
+  width: 100%;
+  z-index: 30;
+}
+
+.Menu-logo {
+  background-color: black;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.Menu-logo svg {
+  width: 80px;
+  height: 22px;
+}
+
+.Menu-gradient {
+  height: 3px;
+  background-image: -moz-linear-gradient(0deg, cyan 0%, yellow 100%);
+  background-image: -webkit-linear-gradient(0deg, cyan 0%, yellow 100%);
+  background-image: -ms-linear-gradient(0deg, cyan 0%, yellow 100%);
+}
+
+.Overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  bottom: 80px;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.Player {
+  position: fixed;
+  bottom: 80px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  display: none;
+}
+
+.Player-informations {
+  padding: 10px;
+}
+
+.Player-controls {
+  position: relative;
+}
+
+.Player-bar {
+  background-image: url("assets/img/bar.jpg");
+  background-repeat: repeat-x;
+  background-position: center center;
+  padding: 10px 0;
+  width: 60%;
+  margin: 0 auto 10px auto;
+  position: relative;
+}
+
+.Player-position {
+  width: 20px;
+}
+
+.Player-play {
+  position: absolute;
+  left: 30px;
+  bottom: 15px;
+  background-image: url("assets/img/pause.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  height: 15px;
+  width: 15px;
+}
+
+.Player-time {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+}
+
+.Player.active {
+  display: block;
+}
+
+.Search {
+  z-index: 15;
+  overflow-y: scroll;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  display: none;
+}
+
+.Search-first {
+  position: relative;
+  top: 40%;
+  z-index: 15;
+  text-align: center;
+  display: none;
+}
+
+.Search-input {
+  border: none;
+  height: 40px;
+  border-bottom: 2px solid white;
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+  background: transparent;
+  font-size: 16px;
+  color: white;
+}
+
+.Search-submit {
+  background-image: url("assets/img/submit.png");
+  background-repeat: no-repeat;
+  background-size: 70px;
+  background-position: center;
+  height: 70px;
+  width: 70px;
+  margin-top: 80px;
+}
+
+.Search-submit.active {
+  background-image: url("assets/img/submit_ok.png");
+}
+
+.Search-results {
+  display: none;
+  position: relative;
+  z-index: 15;
+  padding: 20px;
+  top: 120px;
+}
+
+.Search-results a {
+  color: white;
+  text-decoration: none;
+}
+
+.Search-item {
+  border-top: 1px solid white;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  position: relative;
+  color: white;
+}
+
+.Search-item a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.Search-artist {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.Search-track {
+  font-size: 14px;
+}
+
+.Search-choice {
+  position: relative;
+  z-index: 15;
+  padding: 20px;
+  top: 80px;
+  color: white;
+  text-align: center;
+  display: none;
+}
+
+.Search-cover {
+  width: 130px;
+  height: 130px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0 auto 30px auto;
+}
+
+.Search-artistChoice {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.Search-trackChoice {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.Search-time {
+  font-size: 14px;
+}
+
+.Search-choose {
+  background-image: url("assets/img/choose.png");
+  background-repeat: no-repeat;
+  background-size: 70px;
+  background-position: center;
+  height: 70px;
+  width: 70px;
+  margin-top: 30px;
+}
+
+.Search-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 58px;
+  bottom: 80px;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+}
+
+.Search-close {
+  position: absolute;
+  z-index: 30;
+  top: 20px;
+  right: 20px;
+}
+
+.Search-close img {
+  width: 40px;
+}
+
+.Search.visible, .Search-overlay.visible, .Search-first.visible, .Search-results.visible, .Search-choice.visible {
+  display: block;
+}
+
+.Splash {
+  height: 100vh;
+  background-color: black;
+  background-image: url("assets/img/bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 250px;
+}

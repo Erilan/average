@@ -1,0 +1,162 @@
+.Search {
+  z-index: 15;
+  overflow-y: scroll;
+  height:100%;
+  position: absolute;
+  width: 100%;
+
+  display:none;
+}
+
+.Search-first {
+  position:relative;
+  top:40%;
+  z-index:15;
+  text-align: center;
+
+  display:none;
+}
+
+.Search-input {
+  border:none;
+  height: 40px;
+  border-bottom: 2px solid white;
+  display:block;
+  width: 70%;
+  margin: 0 auto;
+  background: transparent;
+  font-size: 16px;
+  color: white;
+}
+
+.Search-submit {
+  background-image: url('assets/img/submit.png');
+  background-repeat: no-repeat;
+  background-size: 70px;
+  background-position: center;
+  height:70px;
+  width: 70px;
+  margin-top: 80px;
+}
+
+.Search-submit.active {
+  background-image: url('assets/img/submit_ok.png');
+}
+
+// Ecran 2
+
+.Search-results {
+  display: none;
+
+  position: relative;
+  z-index:15;
+  padding: 20px;
+  top: 120px;
+
+  a {
+    color:white;
+    text-decoration: none;
+  }
+}
+
+.Search-item {
+  border-top:1px solid white;
+  margin-bottom:10px;
+  padding-top:10px;
+  position:relative;
+  color:white;
+
+  a {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+  }
+}
+
+.Search-artist {
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom: 2px;
+}
+
+.Search-track {
+  font-size:14px;
+}
+
+// Ecran 3
+
+.Search-choice {
+  position: relative;
+  z-index:15;
+  padding: 20px;
+  top: 80px;
+  color:white;
+  text-align: center;
+
+  display:none;
+}
+
+.Search-cover {
+  width:130px;
+  height:130px;
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin:0 auto 30px auto;
+}
+
+.Search-artistChoice {
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom: 5px;
+}
+
+.Search-trackChoice {
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+.Search-time {
+  font-size:14px;
+}
+
+.Search-choose {
+  background-image: url('assets/img/choose.png');
+  background-repeat: no-repeat;
+  background-size: 70px;
+  background-position: center;
+  height:70px;
+  width: 70px;
+  margin-top: 30px;
+}
+
+.Search-overlay {
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:58px;
+  bottom: 80px;
+  z-index:5;
+  background-color:rgba(0,0,0,0.9);
+
+  display:none;
+}
+
+.Search-close {
+  position:absolute;
+  z-index:30;
+  top:20px;
+  right:20px;
+
+  img {
+    width:40px;
+  }
+}
+
+// Visibility toggle
+
+.Search.visible, .Search-overlay.visible, .Search-first.visible, .Search-results.visible, .Search-choice.visible {
+  display:block;
+}

@@ -2,13 +2,15 @@ var path = require('path')
 var config = require('../config')
 var cssLoaders = require('./css-loaders')
 var projectRoot = path.resolve(__dirname, '../')
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: {
     app: './src/main.js'
   },
   output: {
-    path: config.build.assetsRoot,
+    // path: config.build.assetsRoot,
+    path: path.resolve(__dirname, '../dist/static'),
     publicPath: config.build.assetsPublicPath,
     filename: '[name].js'
   },
@@ -16,9 +18,7 @@ module.exports = {
     extensions: ['', '.js', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
-      'src': path.resolve(__dirname, '../src'),
-      'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components')
+      'src': path.resolve(__dirname, '../src')
     }
   },
   resolveLoader: {
@@ -49,8 +49,12 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: path.join(config.build.assetsSubDirectory, '[name].[hash:7].[ext]')
+          name: path.join(config.build.assetsSubDirectory, '[name].[ext]?[hash:7]')
         }
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
       }
     ]
   },
@@ -59,5 +63,8 @@ module.exports = {
   },
   eslint: {
     formatter: require('eslint-friendly-formatter')
-  }
-}
+  },
+  plugins: [
+    new ExtractTextPlugin("[name].css")
+  ]
+};

@@ -6,57 +6,68 @@ export default {
   searchResult: [],
   formattedSearchResult: [],
   selectedSongId: false,
+  selectedSongDuration: false,
+  selectedSongArtist: false,
   songAdded: false,
   currentSongs: [],
   roaming: false,
   ready: false,
   playedSong: [],
+  isPlaying: false,
+  currentSong: false, 
 
   triggerSearch() {
     if (this.searchInput.length > 2) {
       DZ.api('search', 'GET', {q: this.searchInput}, (response) => {
-
         response.data.forEach((result) => {
           this.formattedSearchResult[result.id] = result
         })
 
         this.searchResult = response.data
 
+        mapStore.showSearchResults = true
+        mapStore.showSearchInput = false
+
       })
     }
   },
 
+  setSelectedSong(songId, duration, songName, artist) {
+    this.selectedSongId = songId
+    this.selectedSongDuration = duration
+    this.selectedSongArtist = artist
+    this.selectedSongName = songName
+    mapStore.showSearchSelectedSong = true
+    mapStore.showSearchResults = false
+  },
+
   initDeezerPlayer() {
+    console.log('init player')
     DZ.init({
       appId  : '179142',
       channelUrl : 'http://localhost:8080/#!/channel.html',
-      // player: {
-      //   container: 'player',
-      //   width : 800,
-      //   height : 300,
-      //   onload : function(){}
-      // }
       player : {
-        // onload : this.onDeezerPlayerLoaded
+        onload : this.onDeezerPlayerLoaded
       }
     });
   },
 
-  // onDeezerPlayerLoaded() {
-  //   $("#controlers input").attr('disabled', false);
-  //   event_listener_append('player_loaded');
-  //   DZ.Event.subscribe('current_track', function(arg){
-  //     event_listener_append('current_track', arg.index, arg.track.title, arg.track.album.title);
-  //   });
-  //   DZ.Event.subscribe('player_position', function(arg){
-  //     event_listener_append('position', arg[0], arg[1]);
-  //     $("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
-  //   });
-  //
-  //   DZ.Event.subscribe('track_end', function() {
-  //     event_listener_append('track_end');
-  //   });
-  // },
+  onDeezerPlayerLoaded() {
+    console.log('playeeeer')
+    // $("#controlers input").attr('disabled', false);
+    // event_listener_append('player_loaded');
+    // DZ.Event.subscribe('current_track', function(arg){
+    //   event_listener_append('current_track', arg.index, arg.track.title, arg.track.album.title);
+    // });
+    // DZ.Event.subscribe('player_position', function(arg){
+    //   event_listener_append('position', arg[0], arg[1]);
+    //   $("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
+    // });
+    //
+    // DZ.Event.subscribe('track_end', function() {
+    //   event_listener_append('track_end');
+    // });
+  },
 
 
   tagSong() {
@@ -74,23 +85,29 @@ export default {
       .dataCollectionFactory('song')
       .createDocument(document, (error, result) => {
         if (error) {
-          console.log(error)
+          console.error(error)
         } else {
           mapStore.removeCurrentTagMarker()
           this.searchInput = ''
           this.searchResult = []
           this.formattedSearchResult = []
           this.selectedSongId = false
+          this.selectedSongDuration = false
+          this.selectedSongArtist = false
+          mapStore.showSearch = false
+          mapStore.showSearchSelectedSong = false
         }
       });
   },
 
   playSong(songId) {
+    this.isPlaying = true
     DZ.player.playTracks([songId])
   },
 
   activateRoaming() {
     this.roaming = true
+    this.isPlaying = true
 
     var songId = this.getSongIdToPlay()
     if (songId) {
@@ -113,6 +130,7 @@ export default {
     })
 
     if (songs.length) {
+      this.currentSong = songs[0]
       return songs[0].song.id
     }
 

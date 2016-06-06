@@ -1,0 +1,23 @@
+.Menu {
+  position:fixed;
+  width:100%;
+  z-index:30;
+}
+
+.Menu-logo {
+  background-color:black;
+  padding:15px 0;
+  text-align: center;
+}
+
+.Menu-logo svg {
+  width:80px;
+  height:22px;
+}
+
+.Menu-gradient {
+  height:3px;
+  background-image: -moz-linear-gradient( 0deg, rgb(0,255,255) 0%, rgb(255,255,0) 100%);
+  background-image: -webkit-linear-gradient( 0deg, rgb(0,255,255) 0%, rgb(255,255,0) 100%);
+  background-image: -ms-linear-gradient( 0deg, rgb(0,255,255) 0%, rgb(255,255,0) 100%);
+}

@@ -1,28 +1,45 @@
 <template>
-  <h2>Home</h2>
+  <!--<h2>Home</h2>-->
 
-  <button
-    v-on:click="onTagButtonClick"
-    v-if="geolocation"
-  >Tag</button>
-  <button
-    v-on:click="onListenButtonClick"
-    v-if="geolocation"
-  >Listen</button>
+  <!--<button-->
+    <!--v-on:click="onTagButtonClick"-->
+    <!--v-if="geolocation"-->
+  <!--&gt;Tag</button>-->
+  <!--<button-->
+    <!--v-on:click="onListenButtonClick"-->
+    <!--v-if="geolocation"-->
+  <!--&gt;Listen</button>-->
 
-  <p v-if="geolocation == null">Loading...</p>
-  <p v-if="geolocation == false">Average a besoin de connaître votre geolocaiton pour fonctionner.</p>
+  <div class="Splash">
+    <div class="Splash-logo">
+      <img src="/static/img/logo_splash.png" />
+    </div>
+
+    <p class="Loading-Infos" v-if="geolocation == null">
+      Récupération de la position...
+    </p>
+    <p class="Loading-Infos" v-if="geolocation == false">
+      MUZI a besoin de connaître votre emplacement pour fonctionner.
+    </p>
+
+    <div class="Splash-informations">
+      <span class="Splash-bottom Splash-bottom--version">Version 0.1</span>
+      <span class="Splash-bottom Splash-bottom--credits">Powered by Kuzzle</span>
+    </div>
+  </div>
 
 </template>
 
 <script>
 
   import MapStore from './../store/MapStore'
+  import DeezerStore from './../store/DeezerStore'
 
   export default {
     data() {
       return {
         mapStore: MapStore,
+        deezerStore: DeezerStore,
         geolocation: null
       }
     },
@@ -37,16 +54,18 @@
       },
       initMapCenterPosition(position) {
         this.geolocation = true
-        this.mapStore.setCurrentPosition(position)
-        console.log(position)
+        this.mapStore.setCenterPosition(position)
+        this.$router.go({name: 'tag'});
       },
       handleGeolocationDenied() {
         this.geolocation = false
       }
     },
     ready() {
-      if (!this.geolocation)
-      navigator.geolocation.getCurrentPosition(this.initMapCenterPosition, this.handleGeolocationDenied)
+      this.deezerStore.initDeezerPlayer()
+      if (!this.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.initMapCenterPosition, this.handleGeolocationDenied)
+      }
     }
   }
 </script>

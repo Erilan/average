@@ -1,0 +1,39 @@
+.Map {
+  height:100vh;
+  position:relative;
+}
+
+.Map-poi {
+  position:absolute;
+  img {
+    width:50px;
+  }
+}
+
+.Map-poi--play {
+  left:130px;
+  top:200px;
+  display: none;
+}
+
+.Map-poi--tag {
+  left:160px;
+  top:250px;
+}
+
+.Map-actions {
+  position:fixed;
+  top:80px;
+  right:15px;
+}
+
+.Map-action {
+  display:block;
+  background:transparent;
+  border:none;
+  margin-bottom: 10px;
+}
+
+.Map-action--roaming.active {
+  image {fill: #ffff00;}
+}
